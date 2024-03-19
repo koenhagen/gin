@@ -2,14 +2,9 @@ name: Run Tests
 
 on:
   push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   lint:
@@ -69,8 +64,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
-      - name: Run Tests
-        run: make test
+      - name: Run Tests 
+        uses: koenhagen/measure-energy-action@v0.33
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          run: make test
+          count: 1
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
